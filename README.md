@@ -20,7 +20,7 @@ Files will be automatically generated to store the encrypted and decrypted infor
 
 First require the module:
 
-    const encryptionTool = require("encryptiontool");
+    const encryptionTool = require("utils/encryptiontool");
 
 #### Generate Keys
 
