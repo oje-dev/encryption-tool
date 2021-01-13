@@ -52,7 +52,7 @@ The argument `passphrase` is the passphrase supplied when generating the private
 
 The argument `encryptedMessage` is the string to be encrypted. _Note: the string must be base64 encoded._
 
-The function returns the original encrypted string.
+The function returns the original string.
 
 ### Usage:
 
@@ -60,6 +60,6 @@ The function returns the original encrypted string.
 
 2. When a user creates an account, use `encryptMessage` to encrypt all personally identifiable data and then store the encrypted data in the database.
 
-3. When a request is made from the front-end, data should be retrieved from the database, decrypted with `decryptMessage` and then send the decrypted information in the response.
+3. When a request is made from the front-end, data should be retrieved from the database, decrypted with `decryptMessage` and then the decrypted information should be sent in the response.
 
 4. To check that an account already exists with an email address when a user creates a new account, emails in the database should be decrypted before they are checked against the supplied email address. If this causes performance issues we can hash the email address instead and encrypt all other personally identifiable data in this way.
