@@ -10,7 +10,7 @@ Run the program with `node encryptiontoolcli.js`.
 
 Generate a new KeyPair with `node encryptiontoolcli.js generate --passphrase="PASS_PHRASE"`.
 
-Encrypt data with `node encryptiontoolcli.js encrypt --message"MESSAGE_TO_ENCRYPT"`.
+Encrypt data with `node encryptiontoolcli.js encrypt --message="MESSAGE_TO_ENCRYPT"`.
 
 Decrypt data with `node encryptiontoolcli.js decrypt --passphrase="PASS_PHRASE"`.
 
