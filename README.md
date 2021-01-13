@@ -2,7 +2,7 @@
 
 ---
 
-> **Make sure to first install the required dependencies with** `npm i`.
+**_Make sure to first install the required dependencies with_** `npm i`.
 
 ## Command Line Usage
 
