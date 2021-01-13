@@ -50,7 +50,48 @@ yargs.command({
     },
   },
   handler(argv) {
-    encryptionTool.generateKeyPair(argv.passphrase);
+    encryptionTool.generateKeyPair(
+      argv.passphrase,
+      (error, publicKey, privateKey) => {
+        try {
+          if (error) {
+            throw error;
+          }
+          if (!fs.existsSync("keys")) {
+            fs.mkdirSync("keys");
+          }
+          fs.writeFileSync(
+            path.join(__dirname, "./keys/publickey.pem"),
+            publicKey
+          );
+          fs.writeFileSync(
+            path.join(__dirname, "./keys/privatekey.pem"),
+            privateKey
+          );
+          console.log(
+            chalk.greenBright.bold.inverse(
+              "\n *** keypair generated successfully *** \n\n".toUpperCase()
+            ) +
+              chalk.greenBright.bold(
+                "Output: " +
+                  path.join(__dirname, "./keys/privatekey.pem") +
+                  "\n" +
+                  "Output: " +
+                  path.join(__dirname, "./keys/publickey.pem") +
+                  "\n"
+              )
+          );
+        } catch (error) {
+          console.log(
+            chalk.red.bold.inverse(
+              "\n *** An error occurred and the keypair could not be generated *** \n\n".toUpperCase()
+            ) +
+              chalk.red.bold(error) +
+              "\n"
+          );
+        }
+      }
+    );
   },
 });
 
@@ -66,7 +107,43 @@ yargs.command({
     },
   },
   handler(argv) {
-    encryptionTool.encryptMessage("../keys/publickey.pem", argv.message);
+    try {
+      encryptionTool.encryptMessage(
+        path.join(__dirname, "./keys/publickey.pem"),
+        argv.message,
+        (error, encryptedString) => {
+          if (error) {
+            throw error;
+          }
+          fs.writeFileSync("encrypted-message.txt", encryptedString);
+          console.log(
+            chalk.greenBright.bold.inverse(
+              "\n *** message encrypted successfully *** \n\n".toUpperCase()
+            ) +
+              chalk.greenBright.bold(
+                "Output: " +
+                  path.join(__dirname, "./encrypted-message.txt") +
+                  "\n\n" +
+                  encryptedString.toString("base64") +
+                  "\n"
+              )
+          );
+        }
+      );
+    } catch (error) {
+      console.log(
+        chalk.red.bold.inverse(
+          "\n *** An error occurred and the string could not be encrypted *** \n\n".toUpperCase()
+        ) + chalk.red.bold(error + "\n")
+      );
+      if (error.errno === -2) {
+        console.log(
+          chalk.red.bold(
+            "Please run the generate command to generate encryption keys.\n"
+          )
+        );
+      }
+    }
   },
 });
 
@@ -87,9 +164,28 @@ yargs.command({
         path.join(__dirname, "./encrypted-message.txt").toString("base64")
       );
       encryptionTool.decryptMessage(
-        "../keys/privatekey.pem",
+        path.join(__dirname, "./keys/privatekey.pem"),
         argv.passphrase,
-        encryptedMessageFromFile.toString()
+        encryptedMessageFromFile.toString(),
+        (error, decryptedMessage) => {
+          if (error) {
+            throw error;
+          }
+          fs.writeFileSync("decrypted-message.txt", decryptedMessage);
+          console.log(
+            chalk.greenBright.bold.inverse(
+              "\n *** message decrypted successfully *** \n\n".toUpperCase()
+            ) +
+              chalk.greenBright.bold(
+                "Output to: " +
+                  path.join(__dirname, "./decrypted-message.txt") +
+                  "\n\n" +
+                  "Output: " +
+                  decryptedMessage +
+                  "\n"
+              )
+          );
+        }
       );
     } catch (error) {
       console.log(
