@@ -24,8 +24,8 @@ const generateKeyPair = (passphrase) => {
         passphrase,
       },
     });
-    if (!fs.existsSync("keys")) {
-      fs.mkdirSync("keys");
+    if (!fs.existsSync("../keys")) {
+      fs.mkdirSync("../keys");
     }
     fs.writeFileSync(
       path.join(__dirname, "../keys/publickey.pem"),
